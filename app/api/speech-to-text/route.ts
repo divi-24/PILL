@@ -4,6 +4,18 @@ interface SpeechResponse {
   text: string;
   error?: string;
 }
+interface GoogleSpeechResponse {
+    results: Array<{
+      alternatives: Array<{
+        transcript: string;
+        confidence: number;
+      }>;
+    }>;
+    error?: {
+      message: string;
+      code: number;
+    };
+  }
 
 export async function POST(req: Request) {
     try {
@@ -40,7 +52,7 @@ export async function POST(req: Request) {
                 },
                 body: JSON.stringify(requestBody),
             }
-        ) as SpeechResponse;
+        );
 
         if (!response.ok) {
             const errorData = await response.json();
@@ -48,7 +60,7 @@ export async function POST(req: Request) {
             throw new Error(errorData.error?.message || 'Failed to convert speech to text');
         }
 
-        const data = await response.json();
+        const data = await response.json() as GoogleSpeechResponse;
         
         if (!data.results || data.results.length === 0) {
             throw new Error('No transcription results found');

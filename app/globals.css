@@ -1,0 +1,139 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light Mode - Healthcare Blue-Green Theme */
+    --background: 200 30% 98%; /* Light blue tinted background */
+    --foreground: 200 10% 20%; /* Dark blue text */
+    --card: 0 0% 100%;
+    --card-foreground: 200 10% 20%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 200 10% 20%;
+    --primary: 200 100% 35%; /* #0066CC - Primary blue */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 142 76% 36%; /* #2E7D32 - Healthcare green */
+    --secondary-foreground: 0 0% 100%;
+    --muted: 200 20% 90%; /* Light blue muted */
+    --muted-foreground: 200 10% 40%;
+    --accent: 200 100% 35%; /* Matching primary for consistency */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 200 20% 85%;
+    --input: 200 20% 85%;
+    --ring: 200 100% 35%;
+    --radius: 12px;
+  }
+
+  .dark {
+    /* Dark Mode - Deep Blue-Green Healthcare Theme */
+    --background: 200 30% 8%; /* Deep blue background */
+    --foreground: 200 20% 95%; /* Light blue text */
+    --card: 200 30% 12%;
+    --card-foreground: 200 20% 95%;
+    --popover: 200 30% 12%;
+    --popover-foreground: 200 20% 95%;
+    --primary: 200 100% 35%; /* #0066CC - Primary blue */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 142 76% 36%; /* #2E7D32 - Healthcare green */
+    --secondary-foreground: 0 0% 100%;
+    --muted: 200 30% 15%;
+    --muted-foreground: 200 20% 70%;
+    --accent: 200 100% 35%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 200 30% 15%;
+    --input: 200 30% 15%;
+    --ring: 200 100% 35%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 
+           rounded-[12px] px-6 py-3 text-lg font-medium 
+           transition-all duration-200 shadow-sm hover:shadow-md
+           dark:shadow-[0_0_15px_rgba(0,102,204,0.3)] dark:hover:shadow-[0_0_20px_rgba(0,102,204,0.4)];
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/90 
+           rounded-[12px] px-6 py-3 text-lg font-medium 
+           transition-all duration-200 shadow-sm hover:shadow-md;
+  }
+
+  .nav-link {
+    @apply text-muted-foreground hover:text-primary transition-colors duration-200
+           relative after:absolute after:bottom-0 after:left-0 after:w-0 
+           after:h-0.5 after:bg-primary after:transition-all after:duration-200
+           hover:after:w-full;
+  }
+
+  .card {
+    @apply bg-card rounded-[12px] p-6 shadow-sm hover:shadow-md 
+           transition-all duration-200 border border-border/50
+           dark:bg-gradient-to-br dark:from-card dark:to-card/80;
+  }
+
+  .input-field {
+    @apply bg-background border border-input rounded-[12px] px-4 py-3
+           focus:outline-none focus:ring-2 focus:ring-primary/20
+           transition-all duration-200;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-muted;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-primary/20 rounded-full hover:bg-primary/30 transition-colors;
+}
+
+/* Smooth transitions */
+* {
+  @apply transition-colors duration-200;
+}
+
+/* Enhanced focus styles */
+:focus-visible {
+  @apply outline-none ring-2 ring-primary/20 ring-offset-2 ring-offset-background;
+}
+
+/* Improved text selection */
+::selection {
+  @apply bg-primary/20 text-primary;
+}
+
+@keyframes progress {
+  from {
+    width: 0%;
+  }
+
+  to {
+    width: 100%;
+  }
+}
+
+.animate-progress [role="progressbar"]>div {
+  animation: progress 2s ease-in-out;
+}

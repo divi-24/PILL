@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { TextToSpeechClient } from "@google-cloud/text-to-speech";
+import { TextToSpeechClient, protos } from "@google-cloud/text-to-speech";
 
 // Initialize the client with credentials
 const client = new TextToSpeechClient({
@@ -22,15 +22,16 @@ export async function POST(req: Request) {
     }
 
     // Configure the synthesis input
-    const request = {
+    const request: protos.google.cloud.texttospeech.v1.ISynthesizeSpeechRequest = {
+    
       input: { text },
       voice: {
         languageCode: "en-US",
         name: "en-US-Neural2-J",
-        ssmlGender: "NEUTRAL",
+        ssmlGender: protos.google.cloud.texttospeech.v1.SsmlVoiceGender.NEUTRAL,
       },
       audioConfig: {
-        audioEncoding: "MP3",
+        audioEncoding: protos.google.cloud.texttospeech.v1.AudioEncoding.MP3,
         speakingRate: 1.0,
         pitch: 0,
       },

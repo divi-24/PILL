@@ -112,10 +112,15 @@ export async function POST(req: Request) {
             );
         }
 
-        try {
+        try { // Format the message for Gemini API
+            const formattedMessage = typeof message === 'string' 
+                ? message 
+                : Array.isArray(message) 
+                    ? message.map(msg => msg.content).join('\n')
+                    : message.content || '';
             // Generate response with detailed error logging
             console.log("Sending request to Gemini API...");
-            const result = await model.generateContent(message as ChatMessage[]);
+            const result = await model.generateContent(formattedMessage);
             console.log("Received response from Gemini API");
             
             if (!result || !result.response) {

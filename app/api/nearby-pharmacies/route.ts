@@ -9,6 +9,30 @@ interface PharmacyResponse {
     lng: number;
   };
 }
+ 
+interface GooglePlacesResponse {
+    results: Array<{
+      place_id: string;
+      name: string;
+      vicinity: string;
+      geometry: {
+        location: {
+          lat: number;
+          lng: number;
+        };
+      };
+      rating?: number;
+      user_ratings_total?: number;
+      opening_hours?: {
+        open_now: boolean;
+        weekday_text?: string[];
+      };
+      phone?: string;
+      website?: string;
+      types?: string[];
+    }>;
+    status: string;
+  }
 
 interface PharmacyError {
   message: string;
@@ -46,20 +70,25 @@ export async function GET(request: Request) {
                     `radius=10000&` + // Increased radius to 10km
                     `type=${type}&` +
                     `key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
-                ) as PharmacyResponse;
-                return response.results || [];
+                );
+                
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch ${type} places`);
+                }
+
+                const data = await response.json() as GooglePlacesResponse;
+                return data.results || [];
             })
         );
 
         // Combine and deduplicate results
         const uniquePlaces = new Map();
-        allResults.flat().forEach((place: any) => {
+        allResults.flat().forEach((place) => {
             if (!uniquePlaces.has(place.place_id)) {
                 uniquePlaces.set(place.place_id, place);
             }
         });
-
-        const pharmacies = Array.from(uniquePlaces.values()).map((place: any) => ({
+        const pharmacies = Array.from(uniquePlaces.values()).map((place) => ({
             id: place.place_id,
             name: place.name,
             address: place.vicinity,
@@ -99,12 +128,10 @@ function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
     const R = 6371; // Earth's radius in km
     const dLat = (lat2 - lat1) * (Math.PI / 180);
     const dLon = (lon2 - lon1) * (Math.PI / 180);
-    const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(lat1 * (Math.PI / 180)) *
-        Math.cos(lat2 * (Math.PI / 180)) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const a = 
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) * 
+    Math.sin(dLon/2) * Math.sin(dLon/2);
+const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     return R * c;
 } 

@@ -11,7 +11,7 @@ export default function Hero() {
           <strong>PillPal</strong>
         </h2>
         <p className="mx-auto max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
-          Experience the future of healthcare with PillPal's suite of intelligent tools. From medication reminders to AI-powered health insights, we're here to make your healthcare journey smarter and more personalized.
+          Experience the future of healthcare with PillPal&apos;s suite of intelligent tools. From medication reminders to AI-powered health insights, we&apos;re here to make your healthcare journey smarter and more personalized.
         </p>
       </div>
       <div className="flex gap-4">

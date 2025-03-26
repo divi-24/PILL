@@ -8,6 +8,12 @@ import { Search, Loader2, AlertCircle, Mic, MicOff, Upload } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useFileUpload } from "@/hooks/use-file-upload"
 
+interface SearchResult {
+  title: string;
+  description: string;
+  url: string;
+}
+
 export default function MediGuide() {
   const [medicineName, setMedicineName] = useState("")
   const [isLoading, setIsLoading] = useState(false)
@@ -51,6 +57,10 @@ export default function MediGuide() {
     }
   }, [])
 
+  useEffect(() => {
+    handleSearch();
+  }, [handleSearch]);
+
   const handleSearch = async () => {
     const trimmedMedicineName = medicineName.trim()
     if (!trimmedMedicineName) {
@@ -73,8 +83,8 @@ export default function MediGuide() {
       
       const data = await response.json()
       setResult(data)
-    } catch (err) {
-      setError("Failed to fetch results. Please try again.")
+    } catch {
+      console.error('Error occurred');
     } finally {
       setIsLoading(false)
     }

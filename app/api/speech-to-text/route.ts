@@ -1,5 +1,10 @@
 import { NextResponse } from "next/server";
 
+interface SpeechResponse {
+  text: string;
+  error?: string;
+}
+
 export async function POST(req: Request) {
     try {
         const { audio } = await req.json();
@@ -11,9 +16,6 @@ export async function POST(req: Request) {
             );
         }
 
-        // Convert base64 audio to blob
-        const audioBlob = Buffer.from(audio, 'base64');
-        
         // Create the request body for Google Cloud Speech-to-Text API
         const requestBody = {
             audio: {
@@ -38,7 +40,7 @@ export async function POST(req: Request) {
                 },
                 body: JSON.stringify(requestBody),
             }
-        );
+        ) as SpeechResponse;
 
         if (!response.ok) {
             const errorData = await response.json();

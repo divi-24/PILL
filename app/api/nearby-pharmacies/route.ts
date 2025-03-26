@@ -1,5 +1,20 @@
 import { NextResponse } from "next/server";
 
+interface PharmacyResponse {
+  name: string;
+  address: string;
+  rating: number;
+  location: {
+    lat: number;
+    lng: number;
+  };
+}
+
+interface PharmacyError {
+  message: string;
+  code: string;
+}
+
 export async function GET(request: Request) {
     try {
         const { searchParams } = new URL(request.url);
@@ -31,9 +46,8 @@ export async function GET(request: Request) {
                     `radius=10000&` + // Increased radius to 10km
                     `type=${type}&` +
                     `key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
-                );
-                const data = await response.json();
-                return data.results || [];
+                ) as PharmacyResponse;
+                return response.results || [];
             })
         );
 

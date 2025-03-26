@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
   <div className="flex items-center gap-2">
     {navItems.map((item) => (
       <Link

@@ -37,8 +37,8 @@ export async function POST(req: Request) {
     };
 
     // Perform the text-to-speech request
-    const [response] = await client.synthesizeSpeech(request);
-    const audioContent = response.audioContent?.toString('base64');
+    const response = await client.synthesizeSpeech(request);
+    const audioContent = response[0].audioContent?.toString('base64');
 
     if (!audioContent) {
       throw new Error("No audio content received");

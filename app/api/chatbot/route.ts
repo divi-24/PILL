@@ -9,7 +9,7 @@ if (!API_KEY) {
 }
 
 // Initialize Gemini API with proper error handling
-let genAI;
+let genAI: GoogleGenerativeAI | undefined;
 try {
     if (!API_KEY) {
         throw new Error("API key is not configured");
